@@ -15,24 +15,20 @@
 	trust : 5,
 	heard : ["no_homework"]
 }
-
 var john = {
 	name : "John",
 	trust : 5
 }
-
 var lisa = {
 	name : "Lisa",
 	trust : 5,
 	heard : ["cant_swim"]
 }
-
 var rachel = {
 	name : "Rachel",
 	trust : 5,
 	heard : ["weird_time"]
 }
-
 var erika = {
 	name : "Erika",
 	trust : 5,
@@ -48,6 +44,8 @@ rachel.close_friends = [erika]
 // The order that the player run into each person
 var meeting_order = [rachel, john, jerry, erika, lisa]
 var first_met_index = -1 // depends on who player choose at first
+window.story.state.meeting_order = meeting_order
+window.story.state.first_met_index = first_met_index
 
 var excuse_dog = {
 	contradict: "hate_dog",
@@ -81,15 +79,16 @@ var excuse_docapp = {
 var player = {}
 player.excuses = [excuse_dog, excuse_hw, excuse_swimteam, excuse_docapp]
 player.usedExcuses = []
+window.story.state.player = player
 
-function tell_lie(lie, toPerson)
+window.story.state.tell_lie = function(lie, toPerson)
 {
 	player.usedExcuses.add(lie)
 	toPerson.heard.add(lie)
 }
 
 
-function check_lie(lie, person)
+window.story.state.check_lie = function(lie, person)
 {
 	// check contradict
 	if (person.heard.includes(lie.contradict))
@@ -116,16 +115,17 @@ function check_lie(lie, person)
 	}
 }
 
-function player_first_met(name)
+window.story.state.player_first_met = function(name)
 {
 	meeting_order.forEach((friend, index) => {
 		if (friend.name == name)
 			first_met_index = index
 	})
+	console.log("LOG :: player_first_met " + name + "; index=" + first_met_index)
 }
 
 // this will replace [PERSON1] [PERSON2] etc.
-function get_friend_by_meeting_order(order_of_encounter)
+window.story.state.get_friend_by_meeting_order = function(order_of_encounter)
 {
 	return meeting_order[(order_of_encounter + first_met_index) % 5]
 }</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="391,92" size="100,100">WELCOME...to the web of LIES.
@@ -149,25 +149,43 @@ Rachel has been a good friend to you. You met her last year at a party that John
 
 A LIE.
 
-[[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]</tw-passagedata><tw-passagedata pid="4" name="John" tags="" position="129,421" size="100,100">John is the first friend you met at college. You both bonded over your mutual love of nature and outdoor activities. John’s best friend is Rachel, and he is very close with Jerry too. All three usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint John today with….
+[[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]
 
-A LIE.
-
-[[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]</tw-passagedata><tw-passagedata pid="5" name="Jerry" tags="" position="484,413" size="100,100">You met Jerry roughly around the same time you met John. Jerry and John are good friends. They might even message each other throughout the day. Too bad, you may need to disappoint Jerry today with….
+&lt;%
+    s.player_first_met(window.passage.name);
+%&gt;</tw-passagedata><tw-passagedata pid="4" name="John" tags="" position="129,421" size="100,100">John is the first friend you met at college. You both bonded over your mutual love of nature and outdoor activities. John’s best friend is Rachel, and he is very close with Jerry too. All three usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint John today with….
 
 A LIE.
 
 [[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]
 
-</tw-passagedata><tw-passagedata pid="6" name="Erika" tags="" position="620,410" size="100,100">You met Erika in Chemistry class your freshman year. She is quiet and unusually suspicious. She will be inclined to ask the hard questions and get to the bottom of any excuse you use. Too bad, you may need to disappoint Erika today with….
+&lt;%
+    s.player_first_met(window.passage.name);
+%&gt;</tw-passagedata><tw-passagedata pid="5" name="Jerry" tags="" position="484,413" size="100,100">You met Jerry roughly around the same time you met John. Jerry and John are good friends. They might even message each other throughout the day. Too bad, you may need to disappoint Jerry today with….
 
 A LIE.
 
-[[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]</tw-passagedata><tw-passagedata pid="7" name="Lisa" tags="" position="773,412" size="100,100">Lisa has been your friend since elementary school. You guys go way back, she was there when you stubbed your toe so bad you threw up in the second grade, and she was there that time when you almost drowned because you fell into the lake at summer camp. She has been your source of comfort and joy. Too bad, you may need to disappoint Lisa today with….
+[[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]
+
+&lt;%
+    s.player_first_met(window.passage.name);
+%&gt;</tw-passagedata><tw-passagedata pid="6" name="Erika" tags="" position="620,410" size="100,100">You met Erika in Chemistry class your freshman year. She is quiet and unusually suspicious. She will be inclined to ask the hard questions and get to the bottom of any excuse you use. Too bad, you may need to disappoint Erika today with….
 
 A LIE.
 
-[[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]</tw-passagedata><tw-passagedata pid="8" name="9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO" tags="" position="375,557" size="100,100">[PERSON] starts running towards you. 
+[[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]
+
+&lt;%
+    s.player_first_met(window.passage.name);
+%&gt;</tw-passagedata><tw-passagedata pid="7" name="Lisa" tags="" position="773,412" size="100,100">Lisa has been your friend since elementary school. You guys go way back, she was there when you stubbed your toe so bad you threw up in the second grade, and she was there that time when you almost drowned because you fell into the lake at summer camp. She has been your source of comfort and joy. Too bad, you may need to disappoint Lisa today with….
+
+A LIE.
+
+[[&gt;&gt;&gt;|9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO]]
+
+&lt;%
+    s.player_first_met(window.passage.name);
+%&gt;</tw-passagedata><tw-passagedata pid="8" name="9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO" tags="" position="375,557" size="100,100">[PERSON] starts running towards you. 
 You hope that [PERSON] will not try to start a conversation with you because you are in a rush. Oops - TOO LATE ! 
 
 PERSON : HEY !  HEY ! 
