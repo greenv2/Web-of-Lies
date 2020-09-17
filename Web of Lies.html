@@ -124,25 +124,40 @@ window.story.state.player_first_met = function(name)
 	console.log("LOG :: player_first_met " + name + "; index=" + first_met_index)
 }
 
-// this will replace [PERSON1] [PERSON2] etc.
+window.story.state.current_friend = null
 window.story.state.get_friend_by_meeting_order = function(order_of_encounter)
 {
 	return meeting_order[(order_of_encounter + first_met_index) % 5]
+}
+
+window.story.state.set_current_friend = function(friend)
+{
+	window.story.state.current_friend = friend
+}
+
+// this will replace [PERSON]
+window.story.state.get_current_friend_name = function()
+{
+	return window.story.state.current_friend.name
 }</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="391,92" size="100,100">WELCOME...to the web of LIES.
 It’s an introvert&#39;s worst nightmare to have to go out and be social on a night they feel they’d rather stay at home…
 Here’s the dilemma. You RSVP’d for an event tonight and you do not want to disappoint your friends, but you also really do not want to go. Throughout the day, you will be seeing multiple people you know and know each other...lies will be told, feelings may get hurt, but if you make it to the end of the day, you will have mastered weaving your web of lies. If you slip up and tell your friends inconsistent stories or tell a lie to a friend that knows better, you will be CAUGHT RED HANDED IN YOUR WEB OF LIES.
 
 Click here to play!
 
-[ [[ START&gt;&gt;&gt; |Starting the Day]]
+[[ START&gt;&gt;&gt; |Starting the Day]]
 </tw-passagedata><tw-passagedata pid="2" name="Starting the Day" tags="" position="393,239" size="100,100">You wake up late and rush out the door, it&#39;s the first week of classes and you want to be on time! Good thing you live on campus. You grab your book bag and begin trekking towards the academic communes on the opposite side of campus. On your way, out of the corner of your eye, you see...
 
 *choices for player to select*
 
 [[&gt;&gt;&gt;RACHEL|Rachel]]
+
 [[&gt;&gt;&gt;JOHN |John]]
+
 [[&gt;&gt;&gt;JERRY|Jerry]]
+
 [[&gt;&gt;&gt;ERIKA|Erika]] 
+
 [[&gt;&gt;&gt;LISA|Lisa]]
 </tw-passagedata><tw-passagedata pid="3" name="Rachel" tags="" position="323,412" size="100,100">If they choose RACHEL
 Rachel has been a good friend to you. You met her last year at a party that John invited you to. Rachel and John are best friends. They usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint Rachel today with….
@@ -185,85 +200,135 @@ A LIE.
 
 &lt;%
     s.player_first_met(window.passage.name);
-%&gt;</tw-passagedata><tw-passagedata pid="8" name="9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO" tags="" position="375,557" size="100,100">[PERSON] starts running towards you. 
-You hope that [PERSON] will not try to start a conversation with you because you are in a rush. Oops - TOO LATE ! 
+%&gt;</tw-passagedata><tw-passagedata pid="8" name="9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO" tags="" position="378,557" size="100,100">&lt;%
+var num_encounter = 0
+var friend = s.get_friend_by_meeting_order(num_encounter)
+s.set_current_friend(friend)
+console.log(friend)
+%&gt;
 
-PERSON : HEY !  HEY ! 
-You: Hey [PERSON], how’s it going? Sorry, I am running to class right now, can’t talk for long. 
-PERSON: Oh, that’s alright, just wanted to say I am looking forward to tonight! You are gonna make it right? You RSVP’s a month ago!
+&lt;%= s.get_current_friend_name()%&gt; starts running towards you. 
+You hope that &lt;%= s.get_current_friend_name()%&gt; will not try to start a conversation with you because you are in a rush. Oops - TOO LATE ! 
+
+&lt;%= s.get_current_friend_name()%&gt;: HEY !  HEY ! 
+You: Hey &lt;%= s.get_current_friend_name()%&gt;, how’s it going? Sorry, I am running to class right now, can’t talk for long. 
+&lt;%= s.get_current_friend_name()%&gt;: Oh, that’s alright, just wanted to say I am looking forward to tonight! You are gonna make it right? You RSVP’s a month ago!
 
 You: Uhhhh, oh I can’t…
 
 I  : 
 
 [[&gt;&gt;&gt;am dog sitting for my neighbor|12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
+
 [[&gt;&gt;&gt;am helping Jerry with homework|12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
+
 [[&gt;&gt;&gt;have a swim team meet||12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
-[[&gt;&gt;&gt;have a doctor’s apt.||12 PM :  LUNCH DESCRIPTION &amp; CONVO]]</tw-passagedata><tw-passagedata pid="9" name="12 PM :  LUNCH DESCRIPTION &amp; CONVO" tags="" position="378,709" size="100,100">Later on, you start feeling hunger pangs. What’s for lunch? You left your packed lunch in the fridge this morning because you ran out of the house in a hurry. Oh well, you will have to get something else. You head to the student center and cafeteria. You’re thinking of ordering a sandwich. Once inside the cafeteria you run into [PERSON].
+
+[[&gt;&gt;&gt;have a doctor’s apt.||12 PM :  LUNCH DESCRIPTION &amp; CONVO]]</tw-passagedata><tw-passagedata pid="9" name="12 PM :  LUNCH DESCRIPTION &amp; CONVO" tags="" position="378,709" size="100,100">&lt;%
+var num_encounter = 1
+var friend = s.get_friend_by_meeting_order(num_encounter)
+s.set_current_friend(friend)
+console.log(friend)
+%&gt;
+
+Later on, you start feeling hunger pangs. What’s for lunch? You left your packed lunch in the fridge this morning because you ran out of the house in a hurry. Oh well, you will have to get something else. You head to the student center and cafeteria. You’re thinking of ordering a sandwich. Once inside the cafeteria you run into &lt;%= s.get_current_friend_name()%&gt;.
 
 
-PERSON: Hi, good to see you! Haven’t seen you since last semester!
+&lt;%= s.get_current_friend_name()%&gt;: Hi, good to see you! Haven’t seen you since last semester!
 You: Wow! Yeah! Great to see you as well! 
-PERSON: What are your plans today? Do you want to go to the park after you are done with class? 
+&lt;%= s.get_current_friend_name()%&gt;: What are your plans today? Do you want to go to the park after you are done with class? 
 
 You: Uhhhh, oh I can’t…
 
 I  : 
 
 [[&gt;&gt;&gt;am dog sitting for my neighbor|1:30PM:PARK]]
-[[&gt;&gt;&gt;am helping Jerry with homework|1:30PM:PARK]]
-[[&gt;&gt;&gt;have a swim team meet|1:30PM:PARK]]
-[[&gt;&gt;&gt;have a doctor’s apt.|1:30PM:PARK]]
-</tw-passagedata><tw-passagedata pid="10" name="1:30PM:PARK" tags="" position="375,838" size="100,100">Before your last class of the day, you walk over to Park Square to lay on the grass. Students are all around you napping, catching up with friends and playing frisbee on the lawn. You sit down close to the sidewalk underneath a big tree...time for some music and a light nap maybe…you put your headphones in and rest your head when [PERSON] walks towards you.
 
-[PERSON] : Can I sit with you?
+[[&gt;&gt;&gt;am helping Jerry with homework|1:30PM:PARK]]
+
+[[&gt;&gt;&gt;have a swim team meet|1:30PM:PARK]]
+
+[[&gt;&gt;&gt;have a doctor’s apt.|1:30PM:PARK]]
+</tw-passagedata><tw-passagedata pid="10" name="1:30PM:PARK" tags="" position="375,838" size="100,100">&lt;%
+var num_encounter = 2
+var friend = s.get_friend_by_meeting_order(num_encounter)
+s.set_current_friend(friend)
+console.log(friend)
+%&gt;
+
+Before your last class of the day, you walk over to Park Square to lay on the grass. Students are all around you napping, catching up with friends and playing frisbee on the lawn. You sit down close to the sidewalk underneath a big tree...time for some music and a light nap maybe…you put your headphones in and rest your head when &lt;%= s.get_current_friend_name()%&gt; walks towards you.
+
+&lt;%= s.get_current_friend_name()%&gt; : Can I sit with you?
 You: Sure, I was just relaxing here before my class. 
-[PERSON] : Oh this is your last class of the day? 
+&lt;%= s.get_current_friend_name()%&gt; : Oh this is your last class of the day? 
 You: Yes, finally. Today has felt very long…
-[PERSON]: I feel the same way. I can’t wait to be done with school for the day, I&#39;m excited for the event tonight! Are you going?
+&lt;%= s.get_current_friend_name()%&gt;: I feel the same way. I can’t wait to be done with school for the day, I&#39;m excited for the event tonight! Are you going?
 
 You: Uhhhh, oh I can’t…
 
 I  : 
 
 [[&gt;&gt;&gt;am dog sitting for my neighbor|LECTURE]]
+
 [[&gt;&gt;&gt;am helping Jerry with homework|LECTURE]]
+
 [[&gt;&gt;&gt;have a swim team meet|LECTURE]]
+
 [[&gt;&gt;&gt;have a doctor’s apt.|LECTURE]]
 </tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="378,1264" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
 
 Pour yourself a stiff one. Flop on the couch, watch Netflix, look at cat memes while playing with your cat. This is success at it’s finest...
 
 ___ FIN ___
-</tw-passagedata><tw-passagedata pid="12" name="Failure Message?" tags="" position="699,1209" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="377,975" size="100,100">Your last class of the day! Almost time to head back home. You enter the lecture hall and find a seat. As soon as you sit down [PERSON] taps you on the shoulder. 
+</tw-passagedata><tw-passagedata pid="12" name="Failure Message?" tags="" position="699,1209" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="377,975" size="100,100">&lt;%
+var num_encounter = 3
+var friend = s.get_friend_by_meeting_order(num_encounter)
+s.set_current_friend(friend)
+console.log(friend)
+%&gt;
 
-[PERSON] : Hey, did you do the homework?
+Your last class of the day! Almost time to head back home. You enter the lecture hall and find a seat. As soon as you sit down &lt;%= s.get_current_friend_name()%&gt; taps you on the shoulder. 
+
+&lt;%= s.get_current_friend_name()%&gt; : Hey, did you do the homework?
 You: Yeah, I submitted it yesterday. 
-[PERSON]: Oh, good for you, I didn’t have time to finish it, I am submitting it late. I was out last night with friends…
+&lt;%= s.get_current_friend_name()%&gt;: Oh, good for you, I didn’t have time to finish it, I am submitting it late. I was out last night with friends…
 You: Yikes, sorry to hear that. There is always next time. 
-[PERSON]: Yeah, hey are you going to that thing tonight? I saw you had RSVP’d - so excited! 
+&lt;%= s.get_current_friend_name()%&gt;: Yeah, hey are you going to that thing tonight? I saw you had RSVP’d - so excited! 
 
 You: Uhhhh, oh I can’t…
 
 I  : 
 
 [[&gt;&gt;&gt;am dog sitting for my neighbor|WALKING_H]]
-[[&gt;&gt;&gt;am helping Jerry with homework|WALKING_H]]
-[[&gt;&gt;&gt;have a swim team meet|WALKING_H]]
-[[&gt;&gt;&gt;have a doctor’s apt.|WALKING_H]]</tw-passagedata><tw-passagedata pid="14" name="WALKING_H" tags="" position="379,1129" size="100,100">Your last class ends. It’s the HOME STRETCH. You are so glad you have made it this far, you actually start to feel a wave of relief. You think you may have gotten away with lying to your friends to avoid attending the event tonight. Home sweet home you go. As you walk across Park Square towards your apartment you stop short. [PERSON] is blocking your path on the sidewalk. They seem distracted because they are talking to someone else….until they turn directly towards you...
 
-[PERSON]: HEEEEEEYYYYY!
+[[&gt;&gt;&gt;am helping Jerry with homework|WALKING_H]]
+
+[[&gt;&gt;&gt;have a swim team meet|WALKING_H]]
+
+[[&gt;&gt;&gt;have a doctor’s apt.|WALKING_H]]</tw-passagedata><tw-passagedata pid="14" name="WALKING_H" tags="" position="379,1129" size="100,100">&lt;%
+var num_encounter = 4
+var friend = s.get_friend_by_meeting_order(num_encounter)
+s.set_current_friend(friend)
+console.log(friend)
+%&gt;
+
+Your last class ends. It’s the HOME STRETCH. You are so glad you have made it this far, you actually start to feel a wave of relief. You think you may have gotten away with lying to your friends to avoid attending the event tonight. Home sweet home you go. As you walk across Park Square towards your apartment you stop short. &lt;%= s.get_current_friend_name()%&gt; is blocking your path on the sidewalk. They seem distracted because they are talking to someone else….until they turn directly towards you...
+
+&lt;%= s.get_current_friend_name()%&gt;: HEEEEEEYYYYY!
 You: Oh for the love of…..
 You: Hi.
-[PERSON] : What’s up! How’s it going? First week back! Do you like your classes? Do you like where you live? We have so much to catch up on! Where to EVEN BEGIN. What are you doing tonight? There are SO MANY events happening - oh wait - I think I remember, you RSVP’d for the fun one! I am going too! 
+&lt;%= s.get_current_friend_name()%&gt; : What’s up! How’s it going? First week back! Do you like your classes? Do you like where you live? We have so much to catch up on! Where to EVEN BEGIN. What are you doing tonight? There are SO MANY events happening - oh wait - I think I remember, you RSVP’d for the fun one! I am going too! 
 
 You: Uhhhh, oh I can’t…
 
 I  : 
 
 [[&gt;&gt;&gt;am dog sitting for my neighbor|FINAL]]
+
 [[&gt;&gt;&gt;am helping Jerry with homework|FINAL]]
+
 [[&gt;&gt;&gt;have a swim team meet|FINAL]]
+
 [[&gt;&gt;&gt;have a doctor’s apt.|FINAL]]</tw-passagedata></tw-storydata>
 		<script>
 		(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
