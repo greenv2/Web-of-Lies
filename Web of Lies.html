@@ -13,26 +13,32 @@
 		<tw-storydata name="Web of Lies" startnode="1" creator="Twine" creator-version="2.3.9" ifid="9B382D75-46B9-4D6C-8FF3-7D06163646D4" zoom="1" format="Snowman" format-version="2.0.2" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css"></style><script role="script" id="twine-user-script" type="text/twine-javascript">var jerry = {
 	name : "Jerry",
 	trust : 5,
-	heard : ["no_homework"]
+	heard : [],
+	knowContradict : ["no_homework"]
 }
 var john = {
 	name : "John",
-	trust : 5
+	trust : 5,
+	heard : [],
+	knowContradict : []
 }
 var lisa = {
 	name : "Lisa",
 	trust : 5,
-	heard : ["cant_swim"]
+	heard : [],
+	knowContradict : ["cant_swim"]
 }
 var rachel = {
 	name : "Rachel",
 	trust : 5,
-	heard : ["weird_time"]
+	heard : [],
+	knowContradict : ["weird_time"]
 }
 var erika = {
 	name : "Erika",
 	trust : 5,
-	heard : ["hate_dog"]
+	heard : [],
+	knowContradict : ["hate_dog"]
 }
 
 // Define close friends
@@ -48,6 +54,7 @@ window.story.state.meeting_order = meeting_order
 window.story.state.first_met_index = first_met_index
 
 var excuse_dog = {
+	ID: "dog",
 	contradict: "hate_dog",
 	player_say: "so... heres the thing", // TODO
 	npc_say: "ah ok",
@@ -55,6 +62,7 @@ var excuse_dog = {
 	player_caught_say: "oh no!"
 }
 var excuse_hw = {
+	ID: "hw",
 	contradict: "no_homework",
 	player_say: "so... heres the thing", // TODO
 	npc_say: "ah ok",
@@ -62,6 +70,7 @@ var excuse_hw = {
 	player_caught_say: "oh no!"
 }
 var excuse_swimteam = {
+	ID: "swimteam",
 	contradict: "cant_swim",
 	player_say: "so... heres the thing", // TODO
 	npc_say: "ah ok",
@@ -69,50 +78,56 @@ var excuse_swimteam = {
 	player_caught_say: "oh no!"
 }
 var excuse_docapp = {
+	ID: "docapp",
 	contradict: "weird_time",
 	player_say: "so... heres the thing", // TODO
 	npc_say: "ah ok",
 	npc_caught_say: "hold on didnt you...",
 	player_caught_say: "oh no!"
 }
+var lies = {}
+lies[excuse_dog.ID] = excuse_dog
+lies[excuse_hw.ID] = excuse_hw
+lies[excuse_swimteam.ID] = excuse_swimteam
+lies[excuse_docapp.ID] = excuse_docapp
 
 var player = {}
 player.excuses = [excuse_dog, excuse_hw, excuse_swimteam, excuse_docapp]
-player.usedExcuses = []
+// player.usedExcuses = []
 window.story.state.player = player
 
-window.story.state.tell_lie = function(lie, toPerson)
+window.story.state.tell_lie = function(lie_ID)
 {
-	player.usedExcuses.add(lie)
-	toPerson.heard.add(lie)
+	// player.usedExcuses.push(lie_ID)
+	var person = window.story.state.current_friend
+	person.heard.push(lie_ID)
+
+	console.log("TOLD " + lie_ID + " TO " + person.name)
+	console.log("believability = " + window.story.state.check_lie(lie_ID, person))
 }
 
 
-window.story.state.check_lie = function(lie, person)
+window.story.state.check_lie = function(lie_ID, person)
 {
 	// check contradict
-	if (person.heard.includes(lie.contradict))
+	if (person.knowContradict.includes(lie_ID))
 	{
 		return 0 // believability min
 	}
 	person.friends.forEach(friend => 
 	{
-		if (friend.heard.includes(lie.contradict))
+		if (friend.knowContradict.includes(lie_ID))
 			return 0.2 // best friend heard contradicting info
 	})
 
-	// TODO: how to calculate believability?
-	var heard_same_lie = person.heard.includes(lie)
+	// diff lie than what heard from friends
 	person.friends.forEach(friend => 
 	{
-		if (friend.heard.includes(lie))
-			heard_same_lie = true
+		if (friend.heard.length > 0 && !friend.heard.includes(lie_ID))
+			return 0.2 // heard diff lie
 	})
 
-	if (heard_same_lie)
-	{
-		return 1 // believability max
-	}
+	return 1 //believability max
 }
 
 window.story.state.player_first_met = function(name)
