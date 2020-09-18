@@ -129,27 +129,27 @@ window.story.state.tell_lie = function(lie_ID)
 	person.heard.push(lie_ID)
 
 	console.log("TOLD " + lie_ID + " TO " + person.name)
-	console.log("believability = " + window.story.state.check_lie(lie_ID, person))
+	console.log("believability = " + window.story.state.check_lie(window.story.state.current_lie, person))
 }
 
 
-window.story.state.check_lie = function(lie_ID, person)
+window.story.state.check_lie = function(lie, person)
 {
 	// check contradict
-	if (person.knowContradict.includes(lie_ID))
+	if (person.knowContradict.includes(lie.contradict))
 	{
 		return 0 // believability min
 	}
 	person.close_friends.forEach(friend => 
 	{
-		if (friend.knowContradict.includes(lie_ID))
+		if (friend.knowContradict.includes(lie.contradict))
 			return 0.2 // best friend heard contradicting info
 	})
 
 	// diff lie than what heard from friends
 	person.close_friends.forEach(friend => 
 	{
-		if (friend.heard.length > 0 && !friend.heard.includes(lie_ID))
+		if (friend.heard.length > 0 && !friend.heard.includes(lie.ID))
 			return 0.2 // heard diff lie
 	})
 
@@ -242,7 +242,7 @@ A LIE.
 
 &lt;%
     s.player_first_met(window.passage.name);
-%&gt;</tw-passagedata><tw-passagedata pid="8" name="9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO" tags="" position="378,557" size="100,100">&lt;%
+%&gt;</tw-passagedata><tw-passagedata pid="8" name="9:00 AM :  LATE TO CLASS DESCRIPTION &amp; CONVO" tags="" position="396,548" size="100,100">&lt;%
 var num_encounter = 0
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -271,7 +271,7 @@ I  :
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition1]]
 &lt;% } %&gt;
-</tw-passagedata><tw-passagedata pid="9" name="12 PM :  LUNCH DESCRIPTION &amp; CONVO" tags="" position="378,709" size="100,100">&lt;%
+</tw-passagedata><tw-passagedata pid="9" name="12 PM :  LUNCH DESCRIPTION &amp; CONVO" tags="" position="394,713" size="100,100">&lt;%
 var num_encounter = 1
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -299,7 +299,7 @@ I  :
 
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition2]]
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="10" name="1:30PM:PARK" tags="" position="375,838" size="100,100">&lt;%
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="10" name="1:30PM:PARK" tags="" position="391,866" size="100,100">&lt;%
 var num_encounter = 2
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -329,12 +329,12 @@ I  :
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition3]]
 &lt;% } %&gt;
-</tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="383,1391" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
+</tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="401,1328" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
 
 Pour yourself a stiff one. Flop on the couch, watch Netflix, look at cat memes while playing with your cat. This is success at it’s finest...
 
 ___ FIN ___
-</tw-passagedata><tw-passagedata pid="12" name="Failure Message?" tags="" position="590,1431" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="377,975" size="100,100">&lt;%
+</tw-passagedata><tw-passagedata pid="12" name="Failure Message" tags="" position="901,909" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="393,995" size="100,100">&lt;%
 var num_encounter = 3
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -364,7 +364,7 @@ I  :
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition4]]
 &lt;% } %&gt;
-</tw-passagedata><tw-passagedata pid="14" name="WALKING_H" tags="" position="379,1125" size="100,100">&lt;%
+</tw-passagedata><tw-passagedata pid="14" name="WALKING_H" tags="" position="395,1145" size="100,100">&lt;%
 var num_encounter = 4
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -392,11 +392,120 @@ I  :
 
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition5]]
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="15" name="transition1" tags="" position="536,643" size="100,100">[[&gt;&gt;&gt;|12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
-</tw-passagedata><tw-passagedata pid="16" name="transition2" tags="" position="524,805" size="100,100">[[&gt;&gt;&gt;|1:30PM:PARK]]
-</tw-passagedata><tw-passagedata pid="17" name="transition3" tags="" position="536,994" size="100,100">[[&gt;&gt;&gt;|LECTURE]]
-</tw-passagedata><tw-passagedata pid="18" name="transition4" tags="" position="520,1112" size="100,100">[[&gt;&gt;&gt;|WALKING_H]]
-</tw-passagedata><tw-passagedata pid="19" name="transition5" tags="" position="531,1253" size="100,100">[[&gt;&gt;&gt;|FINAL]]
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="15" name="transition1" tags="" position="552,643" size="100,100">&lt;%
+var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+if (lie_believability === 0)
+{
+	// FAILED
+	print(s.current_lie.npc_caught_say)
+	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else
+{
+	print(s.current_lie.npc_say)
+  %&gt;
+
+	[[&gt;&gt;&gt;|12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
+
+  &lt;%
+}
+%&gt;</tw-passagedata><tw-passagedata pid="16" name="transition2" tags="" position="541,806" size="100,100">&lt;%
+var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+if (lie_believability === 0)
+{
+	// FAILED
+	print(s.current_lie.npc_caught_say)
+	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else
+{
+	print(s.current_lie.npc_say)
+  %&gt;
+
+	[[&gt;&gt;&gt;|1:30PM:PARK]]
+
+  &lt;%
+}
+%&gt;
+</tw-passagedata><tw-passagedata pid="17" name="transition3" tags="" position="546,980" size="100,100">&lt;%
+var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+if (lie_believability === 0)
+{
+	// FAILED
+	print(s.current_lie.npc_caught_say)
+	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else
+{
+	print(s.current_lie.npc_say)
+  %&gt;
+
+	[[&gt;&gt;&gt;|LECTURE]]
+
+  &lt;%
+}
+%&gt;
+</tw-passagedata><tw-passagedata pid="18" name="transition4" tags="" position="541,1121" size="100,100">&lt;%
+var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+if (lie_believability === 0)
+{
+	// FAILED
+	print(s.current_lie.npc_caught_say)
+	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else
+{
+	print(s.current_lie.npc_say)
+  %&gt;
+
+	[[&gt;&gt;&gt;|WALKING_H]]
+
+  &lt;%
+}
+%&gt;
+</tw-passagedata><tw-passagedata pid="19" name="transition5" tags="" position="547,1273" size="100,100">&lt;%
+var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+if (lie_believability === 0)
+{
+	// FAILED
+	print(s.current_lie.npc_caught_say)
+	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else
+{
+	print(s.current_lie.npc_say)
+  %&gt;
+
+	[[&gt;&gt;&gt;|FINAL]]
+
+  &lt;%
+}
+%&gt;
 </tw-passagedata></tw-storydata>
 		<script>
 		(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
