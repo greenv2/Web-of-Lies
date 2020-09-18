@@ -79,6 +79,7 @@ window.story.state.first_met_index = first_met_index
 
 var excuse_dog = {
 	ID: "dog",
+	description: "dog sitting for your neighbor",
 	contradict: "hate_dog",
 	player_say: "so... heres the thing", // TODO
 	npc_say: "ah ok",
@@ -87,6 +88,7 @@ var excuse_dog = {
 }
 var excuse_hw = {
 	ID: "hw",
+	description: "helping Jerry with homework",
 	contradict: "no_homework",
 	player_say: "so... heres the thing", // TODO
 	npc_say: "ah ok",
@@ -95,6 +97,7 @@ var excuse_hw = {
 }
 var excuse_swimteam = {
 	ID: "swimteam",
+	description: "swim team meeting",
 	contradict: "cant_swim",
 	player_say: "so... heres the thing", // TODO
 	npc_say: "ah ok",
@@ -103,6 +106,7 @@ var excuse_swimteam = {
 }
 var excuse_docapp = {
 	ID: "docapp",
+	description: "doctor’s appointment",
 	contradict: "weird_time",
 	player_say: "so... heres the thing", // TODO
 	npc_say: "ah ok",
@@ -135,7 +139,7 @@ window.story.state.tell_lie = function(lie_ID)
 
 window.story.state.check_lie = function(lie, person)
 {
-	console.log("contradiction of current lie: " + lie.contradict)
+	console.log(lie.ID + " contradiction: " + lie.contradict)
 
 	// check contradict
 	if (person.know_contradict == lie.contradict)
@@ -190,6 +194,16 @@ window.story.state.set_current_friend = function(friend)
 window.story.state.get_current_friend_name = function()
 {
 	return "<strong>" + window.story.state.current_friend.name + "</strong>"
+}
+
+window.story.state.get_friend_name = function(friend)
+{
+	return "<strong>" + window.story.state.current_friend.name + "</strong>"
+}
+
+window.story.state.get_lie_description = function(lie_ID)
+{
+	return "<strong>" + lies[lie_ID].description + "</strong>"
 }</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="385,95" size="100,100">WELCOME...to the web of LIES.
 
 It’s an introvert&#39;s worst nightmare to have to go out and be social on a night they feel they’d rather stay at home…
@@ -348,10 +362,7 @@ I  :
 Pour yourself a stiff one. Flop on the couch, watch Netflix, look at cat memes while playing with your cat. This is success at it’s finest...
 
 ___ FIN ___
-</tw-passagedata><tw-passagedata pid="12" name="Failure Message" tags="" position="901,909" size="100,100">You&#39;re the worst. smh. stop lying to your friends.
-
-
-[[Restart...|Starting the Day]]</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="393,995" size="100,100">&lt;%
+</tw-passagedata><tw-passagedata pid="12" name="Failure Message" tags="" position="901,909" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="393,995" size="100,100">&lt;%
 var num_encounter = 3
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -428,7 +439,8 @@ else if (lie_believability === 0.2)
 {
 	// told lie to diff friend
 	let friend = s.current_friend.close_friends[0]
-	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+	let lie_description = s.get_lie_description(friend.heard[0])
+	print(&quot;Well, I heard from &quot; + s.get_friend_name(friend) + &quot; literally five minutes ago you couldn’t make it because of &quot; + lie_description + &quot;...  you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
 
 	// FAILED
   %&gt;
@@ -462,7 +474,8 @@ else if (lie_believability === 0.2)
 {
 	// told lie to diff friend
 	let friend = s.current_friend.close_friends[0]
-	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+	let lie_description = s.get_lie_description(friend.heard[0])
+	print(&quot;Well, I heard from &quot; + s.get_friend_name(friend) + &quot; literally five minutes ago you couldn’t make it because of &quot; + lie_description + &quot;...  you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
 
 	// FAILED
   %&gt;
@@ -497,7 +510,7 @@ else if (lie_believability === 0.2)
 {
 	// told lie to diff friend
 	let friend = s.current_friend.close_friends[0]
-	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0].description + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
 
 	// FAILED
   %&gt;
@@ -532,7 +545,7 @@ else if (lie_believability === 0.2)
 {
 	// told lie to diff friend
 	let friend = s.current_friend.close_friends[0]
-	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0].description + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
 
 	// FAILED
   %&gt;
@@ -567,7 +580,7 @@ else if (lie_believability === 0.2)
 {
 	// told lie to diff friend
 	let friend = s.current_friend.close_friends[0]
-	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0].description + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
 
 	// FAILED
   %&gt;
