@@ -37,31 +37,31 @@ font-family: 'Sue Ellen Francisco', cursive;
 	name : "Jerry",
 	trust : 5,
 	heard : [],
-	knowContradict : ["no_homework"]
+	know_contradict : "no_homework"
 }
 var john = {
 	name : "John",
 	trust : 5,
 	heard : [],
-	knowContradict : []
+	know_contradict : ""
 }
 var lisa = {
 	name : "Lisa",
 	trust : 5,
 	heard : [],
-	knowContradict : ["cant_swim"]
+	know_contradict : "cant_swim"
 }
 var rachel = {
 	name : "Rachel",
 	trust : 5,
 	heard : [],
-	knowContradict : ["weird_time"]
+	know_contradict : "weird_time"
 }
 var erika = {
 	name : "Erika",
 	trust : 5,
 	heard : [],
-	knowContradict : ["hate_dog"]
+	know_contradict : "hate_dog"
 }
 
 // Define close friends
@@ -129,29 +129,37 @@ window.story.state.tell_lie = function(lie_ID)
 	person.heard.push(lie_ID)
 
 	console.log("TOLD " + lie_ID + " TO " + person.name)
-	console.log("believability = " + window.story.state.check_lie(window.story.state.current_lie, person))
+	console.log("believability = " + window.story.state.check_lie(lies[lie_ID], person))
 }
 
 
 window.story.state.check_lie = function(lie, person)
 {
+	console.log("contradiction of current lie: " + lie.contradict)
+
 	// check contradict
-	if (person.knowContradict.includes(lie.contradict))
+	if (person.know_contradict == lie.contradict)
 	{
+		console.log("Checking contradiction for " + person.name + "; know: " + person.know_contradict)
 		return 0 // believability min
 	}
-	person.close_friends.forEach(friend => 
+	for (let i = 0; i < person.close_friends.length; i++)
 	{
-		if (friend.knowContradict.includes(lie.contradict))
-			return 0.2 // best friend heard contradicting info
-	})
+		let friend = person.close_friends[i]
+		console.log("Checking contradiction from friend " + friend.name + ", heard: " + friend.know_contradict)
+		if (friend.know_contradict == lie.contradict)
+			return 0.5 // best friend heard contradicting info
+	}
 
 	// diff lie than what heard from friends
-	person.close_friends.forEach(friend => 
+	for (let i = 0; i < person.close_friends.length; i++)
 	{
+		let friend = person.close_friends[i]
+		console.log("Checking lie heard from friend " + friend.name + ", heard: ")
+		friend.heard.forEach(lie => console.log(lie))
 		if (friend.heard.length > 0 && !friend.heard.includes(lie.ID))
 			return 0.2 // heard diff lie
-	})
+	}
 
 	return 1 //believability max
 }
@@ -174,6 +182,7 @@ window.story.state.get_friend_by_meeting_order = function(order_of_encounter)
 
 window.story.state.set_current_friend = function(friend)
 {
+	console.log("LOG :: player just met " + name + "; index=" + first_met_index)
 	window.story.state.current_friend = friend
 }
 
@@ -182,7 +191,9 @@ window.story.state.get_current_friend_name = function()
 {
 	return "<strong>" + window.story.state.current_friend.name + "</strong>"
 }</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="385,95" size="100,100">WELCOME...to the web of LIES.
+
 It’s an introvert&#39;s worst nightmare to have to go out and be social on a night they feel they’d rather stay at home…
+
 Here’s the dilemma. You RSVP’d for an event tonight and you do not want to disappoint your friends, but you also really do not want to go. Throughout the day, you will be seeing multiple people you know and know each other...lies will be told, feelings may get hurt, but if you make it to the end of the day, you will have mastered weaving your web of lies. If you slip up and tell your friends inconsistent stories or tell a lie to a friend that knows better, you will be CAUGHT RED HANDED IN YOUR WEB OF LIES.
 
 Click here to play!
@@ -201,8 +212,7 @@ Click here to play!
 [[&gt;&gt;&gt;ERIKA|Erika]] 
 
 [[&gt;&gt;&gt;LISA|Lisa]]
-</tw-passagedata><tw-passagedata pid="3" name="Rachel" tags="" position="323,412" size="100,100">If they choose RACHEL
-Rachel has been a good friend to you. You met her last year at a party that John invited you to. Rachel and John are best friends. They usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint Rachel today with….
+</tw-passagedata><tw-passagedata pid="3" name="Rachel" tags="" position="323,412" size="100,100">Rachel has been a good friend to you. You met her last year at a party that John invited you to. Rachel and John are best friends. They usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint Rachel today with….
 
 A LIE.
 
@@ -254,6 +264,7 @@ You hope that &lt;%= s.get_current_friend_name()%&gt; will not try to start a co
 
 &lt;%= s.get_current_friend_name()%&gt;: HEY !  HEY ! 
 You: Hey &lt;%= s.get_current_friend_name()%&gt;, how’s it going? Sorry, I am running to class right now, can’t talk for long. 
+
 &lt;%= s.get_current_friend_name()%&gt;: Oh, that’s alright, just wanted to say I am looking forward to tonight! You are gonna make it right? You RSVP’s a month ago!
 
 You: Uhhhh, oh I can’t…
@@ -282,6 +293,7 @@ Later on, you start feeling hunger pangs. What’s for lunch? You left your pack
 
 
 &lt;%= s.get_current_friend_name()%&gt;: Hi, good to see you! Haven’t seen you since last semester!
+
 You: Wow! Yeah! Great to see you as well! 
 &lt;%= s.get_current_friend_name()%&gt;: What are your plans today? Do you want to go to the park after you are done with class? 
 
@@ -310,8 +322,10 @@ Before your last class of the day, you walk over to Park Square to lay on the gr
 
 &lt;%= s.get_current_friend_name()%&gt; : Can I sit with you?
 You: Sure, I was just relaxing here before my class. 
+
 &lt;%= s.get_current_friend_name()%&gt; : Oh this is your last class of the day? 
 You: Yes, finally. Today has felt very long…
+
 &lt;%= s.get_current_friend_name()%&gt;: I feel the same way. I can’t wait to be done with school for the day, I&#39;m excited for the event tonight! Are you going?
 
 You: Uhhhh, oh I can’t…
@@ -329,12 +343,15 @@ I  :
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition3]]
 &lt;% } %&gt;
-</tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="401,1328" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
+</tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="404.3333333333333,1328" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
 
 Pour yourself a stiff one. Flop on the couch, watch Netflix, look at cat memes while playing with your cat. This is success at it’s finest...
 
 ___ FIN ___
-</tw-passagedata><tw-passagedata pid="12" name="Failure Message" tags="" position="901,909" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="393,995" size="100,100">&lt;%
+</tw-passagedata><tw-passagedata pid="12" name="Failure Message" tags="" position="901,909" size="100,100">You&#39;re the worst. smh. stop lying to your friends.
+
+
+[[Restart...|Starting the Day]]</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="393,995" size="100,100">&lt;%
 var num_encounter = 3
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -345,8 +362,10 @@ Your last class of the day! Almost time to head back home. You enter the lecture
 
 &lt;%= s.get_current_friend_name()%&gt; : Hey, did you do the homework?
 You: Yeah, I submitted it yesterday. 
+
 &lt;%= s.get_current_friend_name()%&gt;: Oh, good for you, I didn’t have time to finish it, I am submitting it late. I was out last night with friends…
 You: Yikes, sorry to hear that. There is always next time. 
+
 &lt;%= s.get_current_friend_name()%&gt;: Yeah, hey are you going to that thing tonight? I saw you had RSVP’d - so excited! 
 
 You: Uhhhh, oh I can’t…
@@ -376,6 +395,7 @@ Your last class ends. It’s the HOME STRETCH. You are so glad you have made it 
 &lt;%= s.get_current_friend_name()%&gt;: HEEEEEEYYYYY!
 You: Oh for the love of…..
 You: Hi.
+
 &lt;%= s.get_current_friend_name()%&gt; : What’s up! How’s it going? First week back! Do you like your classes? Do you like where you live? We have so much to catch up on! Where to EVEN BEGIN. What are you doing tonight? There are SO MANY events happening - oh wait - I think I remember, you RSVP’d for the fun one! I am going too! 
 
 You: Uhhhh, oh I can’t…
@@ -392,13 +412,25 @@ I  :
 
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition5]]
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="15" name="transition1" tags="" position="552,643" size="100,100">&lt;%
-var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="15" name="transition1" tags="" position="545.3333333333334,643" size="100,100">&lt;%
+let lie_believability = s.check_lie(s.current_lie, s.current_friend)
 if (lie_believability === 0)
 {
 	// FAILED
 	print(s.current_lie.npc_caught_say)
-	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else if (lie_believability === 0.2)
+{
+	// told lie to diff friend
+	let friend = s.current_friend.close_friends[0]
+	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+
+	// FAILED
   %&gt;
 
 	[[&gt;&gt;&gt;|Failure Message]]
@@ -415,12 +447,24 @@ else
   &lt;%
 }
 %&gt;</tw-passagedata><tw-passagedata pid="16" name="transition2" tags="" position="541,806" size="100,100">&lt;%
-var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+let lie_believability = s.check_lie(s.current_lie, s.current_friend)
 if (lie_believability === 0)
 {
 	// FAILED
 	print(s.current_lie.npc_caught_say)
-	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else if (lie_believability === 0.2)
+{
+	// told lie to diff friend
+	let friend = s.current_friend.close_friends[0]
+	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+
+	// FAILED
   %&gt;
 
 	[[&gt;&gt;&gt;|Failure Message]]
@@ -438,12 +482,24 @@ else
 }
 %&gt;
 </tw-passagedata><tw-passagedata pid="17" name="transition3" tags="" position="546,980" size="100,100">&lt;%
-var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+let lie_believability = s.check_lie(s.current_lie, s.current_friend)
 if (lie_believability === 0)
 {
 	// FAILED
 	print(s.current_lie.npc_caught_say)
-	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else if (lie_believability === 0.2)
+{
+	// told lie to diff friend
+	let friend = s.current_friend.close_friends[0]
+	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+
+	// FAILED
   %&gt;
 
 	[[&gt;&gt;&gt;|Failure Message]]
@@ -461,12 +517,24 @@ else
 }
 %&gt;
 </tw-passagedata><tw-passagedata pid="18" name="transition4" tags="" position="541,1121" size="100,100">&lt;%
-var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+let lie_believability = s.check_lie(s.current_lie, s.current_friend)
 if (lie_believability === 0)
 {
 	// FAILED
 	print(s.current_lie.npc_caught_say)
-	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else if (lie_believability === 0.2)
+{
+	// told lie to diff friend
+	let friend = s.current_friend.close_friends[0]
+	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+
+	// FAILED
   %&gt;
 
 	[[&gt;&gt;&gt;|Failure Message]]
@@ -484,12 +552,24 @@ else
 }
 %&gt;
 </tw-passagedata><tw-passagedata pid="19" name="transition5" tags="" position="547,1273" size="100,100">&lt;%
-var lie_believability = s.check_lie(s.current_lie, s.current_friend)
+let lie_believability = s.check_lie(s.current_lie, s.current_friend)
 if (lie_believability === 0)
 {
 	// FAILED
 	print(s.current_lie.npc_caught_say)
-	story.show(&#39;Failure Message&#39;)
+  %&gt;
+
+	[[&gt;&gt;&gt;|Failure Message]]
+
+  &lt;%
+}
+else if (lie_believability === 0.2)
+{
+	// told lie to diff friend
+	let friend = s.current_friend.close_friends[0]
+	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0] + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+
+	// FAILED
   %&gt;
 
 	[[&gt;&gt;&gt;|Failure Message]]
