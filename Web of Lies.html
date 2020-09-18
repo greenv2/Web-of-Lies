@@ -82,8 +82,8 @@ var excuse_dog = {
 	description: "dog sitting for your neighbor",
 	contradict: "hate_dog",
 	player_say: "so... heres the thing", // TODO
-	npc_say: "ah ok",
-	npc_caught_say: "hold on didnt you...",
+	npc_say: "Awww gotcha I love doggos.",
+	npc_caught_say: "Um, Tim brought his dog from home and you refused to come hang out because you HATE DOGS. Were you lying then? Or are you lying NOW?",
 	player_caught_say: "oh no!"
 }
 var excuse_hw = {
@@ -91,8 +91,8 @@ var excuse_hw = {
 	description: "helping Jerry with homework",
 	contradict: "no_homework",
 	player_say: "so... heres the thing", // TODO
-	npc_say: "ah ok",
-	npc_caught_say: "hold on didnt you...",
+	npc_say: "that sucks. really nice of you though. I'm sure Jerry could use the help.",
+	npc_caught_say: "Are you trying to insinuate something...I AM JERRY.",
 	player_caught_say: "oh no!"
 }
 var excuse_swimteam = {
@@ -100,8 +100,8 @@ var excuse_swimteam = {
 	description: "swim team meeting",
 	contradict: "cant_swim",
 	player_say: "so... heres the thing", // TODO
-	npc_say: "ah ok",
-	npc_caught_say: "hold on didnt you...",
+	npc_say: "Oh!! Let me know when your next meet is so I can cheer you on.",
+	npc_caught_say: "FUNNY. Like that time you “swam” at summer camp 12 years ago????!  C’mon… You can't even swim. You're so desperate to get out of spending time with me that you would pick a sport you can't even do. I can't believe you.",
 	player_caught_say: "oh no!"
 }
 var excuse_docapp = {
@@ -109,8 +109,8 @@ var excuse_docapp = {
 	description: "doctor’s appointment",
 	contradict: "weird_time",
 	player_say: "so... heres the thing", // TODO
-	npc_say: "ah ok",
-	npc_caught_say: "hold on didnt you...",
+	npc_say: "I hope everything turns out ok",
+	npc_caught_say: "What kind of Doctor works at night? Like past 6pm? Really? That is the excuse you are going to give me? You’re a sad person. ",
 	player_caught_say: "oh no!"
 }
 var lies = {}
@@ -204,7 +204,16 @@ window.story.state.get_friend_name = function(friend)
 window.story.state.get_lie_description = function(lie_ID)
 {
 	return "<strong>" + lies[lie_ID].description + "</strong>"
-}</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="385,95" size="100,100">WELCOME...to the web of LIES.
+}
+
+window.story.state.reset_game = function()
+{
+	jerry.heard = []
+	john.heard = []
+	lisa.heard = []
+	rachel.heard = []
+	erika.heard = []
+}</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="395,95" size="100,100">WELCOME...to the web of LIES.
 
 It’s an introvert&#39;s worst nightmare to have to go out and be social on a night they feel they’d rather stay at home…
 
@@ -226,7 +235,10 @@ Click here to play!
 [[&gt;&gt;&gt;ERIKA|Erika]] 
 
 [[&gt;&gt;&gt;LISA|Lisa]]
-</tw-passagedata><tw-passagedata pid="3" name="Rachel" tags="" position="323,412" size="100,100">Rachel has been a good friend to you. You met her last year at a party that John invited you to. Rachel and John are best friends. They usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint Rachel today with….
+
+&lt;%
+s.reset_game()
+%&gt;</tw-passagedata><tw-passagedata pid="3" name="Rachel" tags="" position="323,412" size="100,100">Rachel has been a good friend to you. You met her last year at a party that John invited you to. Rachel and John are best friends. They usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint Rachel today with….
 
 A LIE.
 
@@ -258,7 +270,7 @@ A LIE.
 
 &lt;%
     s.player_first_met(window.passage.name);
-%&gt;</tw-passagedata><tw-passagedata pid="7" name="Lisa" tags="" position="773,412" size="100,100">Lisa has been your friend since elementary school. You guys go way back, she was there when you stubbed your toe so bad you threw up in the second grade, and she was there that time when you almost drowned because you fell into the lake at summer camp. She has been your source of comfort and joy. Too bad, you may need to disappoint Lisa today with….
+%&gt;</tw-passagedata><tw-passagedata pid="7" name="Lisa" tags="" position="772,413" size="100,100">Lisa has been your friend since elementary school. You guys go way back, she was there when you stubbed your toe so bad you threw up in the second grade, and she was there that time when you almost drowned because you fell into the lake at summer camp. She has been your source of comfort and joy. Too bad, you may need to disappoint Lisa today with….
 
 A LIE.
 
@@ -277,9 +289,10 @@ console.log(friend)
 You hope that &lt;%= s.get_current_friend_name()%&gt; will not try to start a conversation with you because you are in a rush. Oops - TOO LATE ! 
 
 &lt;%= s.get_current_friend_name()%&gt;: HEY !  HEY ! 
+
 You: Hey &lt;%= s.get_current_friend_name()%&gt;, how’s it going? Sorry, I am running to class right now, can’t talk for long. 
 
-&lt;%= s.get_current_friend_name()%&gt;: Oh, that’s alright, just wanted to say I am looking forward to tonight! You are gonna make it right? You RSVP’s a month ago!
+&lt;%= s.get_current_friend_name()%&gt;: Oh, that’s alright, just wanted to say I am looking forward to tonight! You are gonna make it right? You RSVP’d a month ago!
 
 You: Uhhhh, oh I can’t…
 
@@ -309,6 +322,7 @@ Later on, you start feeling hunger pangs. What’s for lunch? You left your pack
 &lt;%= s.get_current_friend_name()%&gt;: Hi, good to see you! Haven’t seen you since last semester!
 
 You: Wow! Yeah! Great to see you as well! 
+
 &lt;%= s.get_current_friend_name()%&gt;: What are your plans today? Do you want to go to the park after you are done with class? 
 
 You: Uhhhh, oh I can’t…
@@ -357,12 +371,17 @@ I  :
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition3]]
 &lt;% } %&gt;
-</tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="404.3333333333333,1328" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
+</tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="404,1328" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
 
 Pour yourself a stiff one. Flop on the couch, watch Netflix, look at cat memes while playing with your cat. This is success at it’s finest...
 
 ___ FIN ___
-</tw-passagedata><tw-passagedata pid="12" name="Failure Message" tags="" position="901,909" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="393,995" size="100,100">&lt;%
+
+[[Play Again!|Starting the Day]]</tw-passagedata><tw-passagedata pid="12" name="Failure Message" tags="" position="901,909" size="100,100">YoU hAvE FaiLeD 
+Maybe you’re just a good person and a bad liar…your web of lies is BROKEN.
+
+
+[[Restart...|Starting the Day]]</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="393,995" size="100,100">&lt;%
 var num_encounter = 3
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -423,7 +442,7 @@ I  :
 
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition5]]
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="15" name="transition1" tags="" position="545.3333333333334,643" size="100,100">&lt;%
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="15" name="transition1" tags="" position="545,643" size="100,100">&lt;%
 let lie_believability = s.check_lie(s.current_lie, s.current_friend)
 if (lie_believability === 0)
 {
@@ -510,7 +529,8 @@ else if (lie_believability === 0.2)
 {
 	// told lie to diff friend
 	let friend = s.current_friend.close_friends[0]
-	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0].description + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+	let lie_description = s.get_lie_description(friend.heard[0])
+	print(&quot;Well, I heard from &quot; + s.get_friend_name(friend) + &quot; literally five minutes ago you couldn’t make it because of &quot; + lie_description + &quot;...  you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
 
 	// FAILED
   %&gt;
@@ -545,7 +565,8 @@ else if (lie_believability === 0.2)
 {
 	// told lie to diff friend
 	let friend = s.current_friend.close_friends[0]
-	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0].description + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+	let lie_description = s.get_lie_description(friend.heard[0])
+	print(&quot;Well, I heard from &quot; + s.get_friend_name(friend) + &quot; literally five minutes ago you couldn’t make it because of &quot; + lie_description + &quot;...  you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
 
 	// FAILED
   %&gt;
@@ -564,7 +585,7 @@ else
   &lt;%
 }
 %&gt;
-</tw-passagedata><tw-passagedata pid="19" name="transition5" tags="" position="547,1273" size="100,100">&lt;%
+</tw-passagedata><tw-passagedata pid="19" name="transition5" tags="" position="543,1267" size="100,100">&lt;%
 let lie_believability = s.check_lie(s.current_lie, s.current_friend)
 if (lie_believability === 0)
 {
@@ -580,7 +601,8 @@ else if (lie_believability === 0.2)
 {
 	// told lie to diff friend
 	let friend = s.current_friend.close_friends[0]
-	print(&quot;Well, I heard from &quot; + friend.name + &quot; literally five minutes ago you couldn’t make it because of &quot; + friend.heard[0].description + &quot; ...you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
+	let lie_description = s.get_lie_description(friend.heard[0])
+	print(&quot;Well, I heard from &quot; + s.get_friend_name(friend) + &quot; literally five minutes ago you couldn’t make it because of &quot; + lie_description + &quot;...  you can even keep your story straight. C’MON! Seriously??! \n\nYoU hAvE FaiLeD&quot;)
 
 	// FAILED
   %&gt;
