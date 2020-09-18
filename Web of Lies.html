@@ -33,7 +33,14 @@ font-family: 'Nanum Brush Script', cursive;
 font-family: 'Nanum Pen Script', cursive;
 font-family: 'Shadows Into Light', cursive;
 font-family: 'Sue Ellen Francisco', cursive;
-*/</style><script role="script" id="twine-user-script" type="text/twine-javascript">var jerry = {
+*/
+
+.side_img{
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">var jerry = {
 	name : "Jerry",
 	trust : 5,
 	heard : [],
@@ -213,18 +220,16 @@ window.story.state.reset_game = function()
 	lisa.heard = []
 	rachel.heard = []
 	erika.heard = []
-}</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="395,95" size="100,100">WELCOME...to the web of LIES.
+}</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="395,96" size="100,100">WELCOME...to the web of LIES.
 
 It’s an introvert&#39;s worst nightmare to have to go out and be social on a night they feel they’d rather stay at home…
 
 Here’s the dilemma. You RSVP’d for an event tonight and you do not want to disappoint your friends, but you also really do not want to go. Throughout the day, you will be seeing multiple people you know and know each other...lies will be told, feelings may get hurt, but if you make it to the end of the day, you will have mastered weaving your web of lies. If you slip up and tell your friends inconsistent stories or tell a lie to a friend that knows better, you will be CAUGHT RED HANDED IN YOUR WEB OF LIES.
 
-Click here to play!
 
-[[ START&gt;&gt;&gt; |Starting the Day]]
+[[ BEGIN&gt;&gt;&gt; |Starting the Day]]
 </tw-passagedata><tw-passagedata pid="2" name="Starting the Day" tags="" position="393,239" size="100,100">You wake up late and rush out the door, it&#39;s the first week of classes and you want to be on time! Good thing you live on campus. You grab your book bag and begin trekking towards the academic communes on the opposite side of campus. On your way, out of the corner of your eye, you see...
 
-*choices for player to select*
 
 [[&gt;&gt;&gt;RACHEL|Rachel]]
 
@@ -238,7 +243,7 @@ Click here to play!
 
 &lt;%
 s.reset_game()
-%&gt;</tw-passagedata><tw-passagedata pid="3" name="Rachel" tags="" position="323,412" size="100,100">Rachel has been a good friend to you. You met her last year at a party that John invited you to. Rachel and John are best friends. They usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint Rachel today with….
+%&gt;</tw-passagedata><tw-passagedata pid="3" name="Rachel" tags="" position="323,412" size="100,100">Rachel has been a good friend to you. You met her last year at a party that Erika invited you to. Rachel and Erika are best friends. They usually go to the same events and are likely to message each other throughout the day. Too bad, you may need to disappoint Rachel today with….
 
 A LIE.
 
@@ -309,7 +314,7 @@ I  :
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition1]]
 &lt;% } %&gt;
-</tw-passagedata><tw-passagedata pid="9" name="12 PM :  LUNCH DESCRIPTION &amp; CONVO" tags="" position="394,713" size="100,100">&lt;%
+</tw-passagedata><tw-passagedata pid="9" name="12 PM :  LUNCH DESCRIPTION &amp; CONVO" tags="" position="391,713" size="100,100">&lt;%
 var num_encounter = 1
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -339,7 +344,7 @@ I  :
 
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition2]]
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="10" name="1:30PM:PARK" tags="" position="391,866" size="100,100">&lt;%
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="10" name="1:30PM:PARK" tags="park" position="392,866" size="100,100">&lt;%
 var num_encounter = 2
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -371,6 +376,11 @@ I  :
 &lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
 [[transition3]]
 &lt;% } %&gt;
+
+&lt;img src=&quot;https://raw.githubusercontent.com/greenv2/Web-of-Lies/master/imgs/tree.png&quot; width=&quot;45%&quot; class=&quot;side_img&quot; id=&quot;tree&quot;&gt;
+
+
+
 </tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="404,1328" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
 
 Pour yourself a stiff one. Flop on the couch, watch Netflix, look at cat memes while playing with your cat. This is success at it’s finest...
