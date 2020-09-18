@@ -69,6 +69,7 @@ jerry.close_friends = [john]
 john.close_friends = [jerry]
 erika.close_friends = [rachel]
 rachel.close_friends = [erika]
+lisa.close_friends = []
 
 // The order that the player run into each person
 var meeting_order = [rachel, john, jerry, erika, lisa]
@@ -121,6 +122,8 @@ window.story.state.player = player
 
 window.story.state.tell_lie = function(lie_ID)
 {
+	window.story.state.current_lie = lies[lie_ID]
+
 	// player.usedExcuses.push(lie_ID)
 	var person = window.story.state.current_friend
 	person.heard.push(lie_ID)
@@ -137,14 +140,14 @@ window.story.state.check_lie = function(lie_ID, person)
 	{
 		return 0 // believability min
 	}
-	person.friends.forEach(friend => 
+	person.close_friends.forEach(friend => 
 	{
 		if (friend.knowContradict.includes(lie_ID))
 			return 0.2 // best friend heard contradicting info
 	})
 
 	// diff lie than what heard from friends
-	person.friends.forEach(friend => 
+	person.close_friends.forEach(friend => 
 	{
 		if (friend.heard.length > 0 && !friend.heard.includes(lie_ID))
 			return 0.2 // heard diff lie
@@ -162,6 +165,7 @@ window.story.state.player_first_met = function(name)
 	console.log("LOG :: player_first_met " + name + "; index=" + first_met_index)
 }
 
+window.story.state.current_lie = null
 window.story.state.current_friend = null
 window.story.state.get_friend_by_meeting_order = function(order_of_encounter)
 {
@@ -177,7 +181,7 @@ window.story.state.set_current_friend = function(friend)
 window.story.state.get_current_friend_name = function()
 {
 	return window.story.state.current_friend.name
-}</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="391,92" size="100,100">WELCOME...to the web of LIES.
+}</script><tw-passagedata pid="1" name="WELCOME...to the web of LIES." tags="" position="385,95" size="100,100">WELCOME...to the web of LIES.
 It’s an introvert&#39;s worst nightmare to have to go out and be social on a night they feel they’d rather stay at home…
 Here’s the dilemma. You RSVP’d for an event tonight and you do not want to disappoint your friends, but you also really do not want to go. Throughout the day, you will be seeing multiple people you know and know each other...lies will be told, feelings may get hurt, but if you make it to the end of the day, you will have mastered weaving your web of lies. If you slip up and tell your friends inconsistent stories or tell a lie to a friend that knows better, you will be CAUGHT RED HANDED IN YOUR WEB OF LIES.
 
@@ -254,15 +258,20 @@ You: Hey &lt;%= s.get_current_friend_name()%&gt;, how’s it going? Sorry, I am 
 
 You: Uhhhh, oh I can’t…
 
-I  : 
+I  :
 
-[[&gt;&gt;&gt;am dog sitting for my neighbor|12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;dog&quot;)&#39; data-passage=&quot;transition1&quot; href=&quot;javascript:void(0)&quot;&gt; am dog sitting for my neighbor&lt;/a&gt;
 
-[[&gt;&gt;&gt;am helping Jerry with homework|12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;hw&quot;)&#39; data-passage=&quot;transition1&quot; href=&quot;javascript:void(0)&quot;&gt; am helping Jerry with homework&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a swim team meet||12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;swimteam&quot;)&#39; data-passage=&quot;transition1&quot; href=&quot;javascript:void(0)&quot;&gt; have a swim team meeting&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a doctor’s apt.||12 PM :  LUNCH DESCRIPTION &amp; CONVO]]</tw-passagedata><tw-passagedata pid="9" name="12 PM :  LUNCH DESCRIPTION &amp; CONVO" tags="" position="378,709" size="100,100">&lt;%
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;docapp&quot;)&#39; data-passage=&quot;transition1&quot; href=&quot;javascript:void(0)&quot;&gt; have a doctor’s appointment&lt;/a&gt;
+
+&lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
+[[transition1]]
+&lt;% } %&gt;
+</tw-passagedata><tw-passagedata pid="9" name="12 PM :  LUNCH DESCRIPTION &amp; CONVO" tags="" position="378,709" size="100,100">&lt;%
 var num_encounter = 1
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -280,14 +289,17 @@ You: Uhhhh, oh I can’t…
 
 I  : 
 
-[[&gt;&gt;&gt;am dog sitting for my neighbor|1:30PM:PARK]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;dog&quot;)&#39; data-passage=&quot;transition2&quot; href=&quot;javascript:void(0)&quot;&gt; am dog sitting for my neighbor&lt;/a&gt;
 
-[[&gt;&gt;&gt;am helping Jerry with homework|1:30PM:PARK]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;hw&quot;)&#39; data-passage=&quot;transition2&quot; href=&quot;javascript:void(0)&quot;&gt; am helping Jerry with homework&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a swim team meet|1:30PM:PARK]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;swimteam&quot;)&#39; data-passage=&quot;transition2&quot; href=&quot;javascript:void(0)&quot;&gt; have a swim team meeting&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a doctor’s apt.|1:30PM:PARK]]
-</tw-passagedata><tw-passagedata pid="10" name="1:30PM:PARK" tags="" position="375,838" size="100,100">&lt;%
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;docapp&quot;)&#39; data-passage=&quot;transition2&quot; href=&quot;javascript:void(0)&quot;&gt; have a doctor’s appointment&lt;/a&gt;
+
+&lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
+[[transition2]]
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="10" name="1:30PM:PARK" tags="" position="375,838" size="100,100">&lt;%
 var num_encounter = 2
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -306,19 +318,23 @@ You: Uhhhh, oh I can’t…
 
 I  : 
 
-[[&gt;&gt;&gt;am dog sitting for my neighbor|LECTURE]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;dog&quot;)&#39; data-passage=&quot;transition3&quot; href=&quot;javascript:void(0)&quot;&gt; am dog sitting for my neighbor&lt;/a&gt;
 
-[[&gt;&gt;&gt;am helping Jerry with homework|LECTURE]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;hw&quot;)&#39; data-passage=&quot;transition3&quot; href=&quot;javascript:void(0)&quot;&gt; am helping Jerry with homework&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a swim team meet|LECTURE]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;swimteam&quot;)&#39; data-passage=&quot;transition3&quot; href=&quot;javascript:void(0)&quot;&gt; have a swim team meeting&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a doctor’s apt.|LECTURE]]
-</tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="378,1264" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;docapp&quot;)&#39; data-passage=&quot;transition3&quot; href=&quot;javascript:void(0)&quot;&gt; have a doctor’s appointment&lt;/a&gt;
+
+&lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
+[[transition3]]
+&lt;% } %&gt;
+</tw-passagedata><tw-passagedata pid="11" name="FINAL" tags="" position="383,1391" size="100,100">CONGRATS YOU HAVE SUCCESSFULLY COMPLETED YOUR WEB OF LIES AND IT IS HOLDING STRONG. 
 
 Pour yourself a stiff one. Flop on the couch, watch Netflix, look at cat memes while playing with your cat. This is success at it’s finest...
 
 ___ FIN ___
-</tw-passagedata><tw-passagedata pid="12" name="Failure Message?" tags="" position="508,1262" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="377,975" size="100,100">&lt;%
+</tw-passagedata><tw-passagedata pid="12" name="Failure Message?" tags="" position="590,1431" size="100,100">You&#39;re the worst. smh. stop lying to your friends.</tw-passagedata><tw-passagedata pid="13" name="LECTURE" tags="" position="377,975" size="100,100">&lt;%
 var num_encounter = 3
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -337,13 +353,18 @@ You: Uhhhh, oh I can’t…
 
 I  : 
 
-[[&gt;&gt;&gt;am dog sitting for my neighbor|WALKING_H]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;dog&quot;)&#39; data-passage=&quot;transition4&quot; href=&quot;javascript:void(0)&quot;&gt; am dog sitting for my neighbor&lt;/a&gt;
 
-[[&gt;&gt;&gt;am helping Jerry with homework|WALKING_H]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;hw&quot;)&#39; data-passage=&quot;transition4&quot; href=&quot;javascript:void(0)&quot;&gt; am helping Jerry with homework&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a swim team meet|WALKING_H]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;swimteam&quot;)&#39; data-passage=&quot;transition4&quot; href=&quot;javascript:void(0)&quot;&gt; have a swim team meeting&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a doctor’s apt.|WALKING_H]]</tw-passagedata><tw-passagedata pid="14" name="WALKING_H" tags="" position="379,1129" size="100,100">&lt;%
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;docapp&quot;)&#39; data-passage=&quot;transition4&quot; href=&quot;javascript:void(0)&quot;&gt; have a doctor’s appointment&lt;/a&gt;
+
+&lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
+[[transition4]]
+&lt;% } %&gt;
+</tw-passagedata><tw-passagedata pid="14" name="WALKING_H" tags="" position="379,1125" size="100,100">&lt;%
 var num_encounter = 4
 var friend = s.get_friend_by_meeting_order(num_encounter)
 s.set_current_friend(friend)
@@ -361,13 +382,22 @@ You: Uhhhh, oh I can’t…
 
 I  : 
 
-[[&gt;&gt;&gt;am dog sitting for my neighbor|FINAL]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;dog&quot;)&#39; data-passage=&quot;transition5&quot; href=&quot;javascript:void(0)&quot;&gt; am dog sitting for my neighbor&lt;/a&gt;
 
-[[&gt;&gt;&gt;am helping Jerry with homework|FINAL]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;hw&quot;)&#39; data-passage=&quot;transition5&quot; href=&quot;javascript:void(0)&quot;&gt; am helping Jerry with homework&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a swim team meet|FINAL]]
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;swimteam&quot;)&#39; data-passage=&quot;transition5&quot; href=&quot;javascript:void(0)&quot;&gt; have a swim team meeting&lt;/a&gt;
 
-[[&gt;&gt;&gt;have a doctor’s apt.|FINAL]]</tw-passagedata></tw-storydata>
+&lt;a onclick=&#39;window.story.state.tell_lie(&quot;docapp&quot;)&#39; data-passage=&quot;transition5&quot; href=&quot;javascript:void(0)&quot;&gt; have a doctor’s appointment&lt;/a&gt;
+
+&lt;% if (false) { // THIS IS HIDDEN FOR TWINE VISUALIZATION PURPOSE %&gt;
+[[transition5]]
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="15" name="transition1" tags="" position="536,643" size="100,100">[[&gt;&gt;&gt;|12 PM :  LUNCH DESCRIPTION &amp; CONVO]]
+</tw-passagedata><tw-passagedata pid="16" name="transition2" tags="" position="524,805" size="100,100">[[&gt;&gt;&gt;|1:30PM:PARK]]
+</tw-passagedata><tw-passagedata pid="17" name="transition3" tags="" position="536,994" size="100,100">[[&gt;&gt;&gt;|LECTURE]]
+</tw-passagedata><tw-passagedata pid="18" name="transition4" tags="" position="520,1112" size="100,100">[[&gt;&gt;&gt;|WALKING_H]]
+</tw-passagedata><tw-passagedata pid="19" name="transition5" tags="" position="531,1253" size="100,100">[[&gt;&gt;&gt;|FINAL]]
+</tw-passagedata></tw-storydata>
 		<script>
 		(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";window.either=function(){for(var n=[],t=0;t<arguments.length;t++)if(arguments[t]instanceof Array)for(var r=0;r<arguments[t].length;r++)n.push(arguments[t][r]);else n.push(arguments[t]);return n[_.random(n.length-1)]},window.hasVisited=function(){var n=null;if(1==arguments.length)return null!=(n=window.story.passage(arguments[0]))&&window.story.history.includes(n.id);for(var t=0;t<arguments.length;t++)if(null==(n=window.story.passage(arguments[t]))||0==window.story.history.includes(n.id))return!1;return!0},window.visited=function(){for(var n=[],t=[],r=0;r<arguments.length;r++){var e=window.story.passage(arguments[r]);null!=e&&(t=window.story.history.filter(function(n){return n==e.id})),n.push(t.length)}return Math.min.apply(Math,n)},window.renderToSelector=function(n,t){var r=window.story.passage(t);null!=r&&$(n).html(r.render())},window.getStyles=function(){return $.when.apply($,$.map(arguments,function(n){return $.get(n,function(n){$("<style>"+n+"</style>").appendTo("head")})}))};
